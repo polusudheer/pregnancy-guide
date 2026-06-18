@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pregnancy Care Guide - Hyderabad</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#e91e63">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤰</text></svg>">
+    <style>
+        :root {
+            --primary: #e91e63;
+            --primary-dark: #c2185b;
+            --secondary: #ff9800;
+            --success: #4caf50;
+            --warning: #ff5722;
+            --info: #2196f3;
+            --light-bg: #fce4ec;
+            --card-bg: #ffffff;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --border-radius: 16px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            padding-bottom: 80px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .header h1 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 15px 10px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-card .number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            margin: 20px 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .trimester-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .trimester-tab {
+            flex: 1;
+            min-width: 100px;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--card-bg);
+            color: var(--text-secondary);
+        }
+
+        .trimester-tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
+        }
+
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .week-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 2px solid transparent;
+        }
+
+        .week-card:hover, .week-card.selected {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+            box-shadow: 0 6px 20px rgba(233, 30, 99, 0.2);
+        }
+
+        .week-card .week-num {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .week-card .week-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .week-card .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin: 8px auto 0;
+        }
+
+        .week-card .progress-dot.complete {
+            background: var(--success);
+        }
+
+        .week-card .progress-dot.partial {
+            background: var(--secondary);
+        }
+
+        .week-card .progress-dot.empty {
+            background: #ddd;
+        }
+
+        .current-week-badge {
+            background: var(--success);
+            color: white;
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+
+        .day-selector {
+            display: flex;
+            gap: 8px;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding: 5px 0;
+        }
+
+        .day-btn {
+            flex: 1;
+            min-width: 45px;
+            padding: 12px 8px;
+            border: none;
+            border-radius: 12px;
+            background: var(--card-bg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .day-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .day-btn .day-name {
+            font-size: 0.7rem;
+            display: block;
+        }
+
+        .day-btn .day-num {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .diet-toggle {
+            display: flex;
+            background: var(--card-bg);
+            border-radius: 25px;
+            padding: 5px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .diet-toggle button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: transparent;
+            color: var(--text-secondary);
+        }
+
+        .diet-toggle button.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .meal-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .meal-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .meal-header.breakfast { background: linear-gradient(135deg, #ff9800, #f57c00); }
+        .meal-header.morning-snack { background: linear-gradient(135deg, #8bc34a, #689f38); }
+        .meal-header.lunch { background: linear-gradient(135deg, #2196f3, #1976d2); }
+        .meal-header.evening-snack { background: linear-gradient(135deg, #9c27b0, #7b1fa2); }
+        .meal-header.dinner { background: linear-gradient(135deg, #607d8b, #455a64); }
+        .meal-header.post-dinner { background: linear-gradient(135deg, #795548, #5d4037); }
+        .meal-header.early-morning { background: linear-gradient(135deg, #00bcd4, #0097a7); }
+
+        .meal-time {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .meal-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .meal-content {
+            padding: 15px;
+        }
+
+        .meal-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .meal-item:last-child {
+            border-bottom: none;
+        }
+
+        .meal-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .meal-details h4 {
+            font-size: 0.9rem;
+            margin-bottom: 3px;
+        }
+
+        .meal-details p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .nutrition-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 8px;
+        }
+
+        .nutrition-tag {
+            background: var(--light-bg);
+            color: var(--primary-dark);
+            font-size: 0.65rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+
+        .exercise-card {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .exercise-card h3 {
+            color: #2e7d32;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .exercise-item {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .exercise-item h4 {
+            font-size: 0.9rem;
+            color: #2e7d32;
+            margin-bottom: 5px;
+        }
+
+        .exercise-item p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .energy-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .energy-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .energy-btn.active {
+            border-color: var(--success);
+            background: #e8f5e9;
+        }
+
+        .energy-btn .emoji {
+            font-size: 1.5rem;
+        }
+
+        .energy-btn .label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .warning-card {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border-left: 4px solid var(--warning);
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .warning-card h4 {
+            color: #e65100;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .warning-card ul {
+            font-size: 0.8rem;
+            color: #bf360c;
+            padding-left: 20px;
+        }
+
+        .warning-card li {
+            margin-bottom: 5px;
+        }
+
+        .danger-card {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border-left: 4px solid #d32f2f;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .danger-card h4 {
+            color: #c62828;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .tracking-section {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .tracking-section h3 {
+            font-size: 1rem;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+        }
+
+        .tracking-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .tracking-item:last-child {
+            border-bottom: none;
+        }
+
+        .tracking-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tracking-label span {
+            font-size: 0.9rem;
+        }
+
+        .track-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .track-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .track-btn.done {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .track-btn.done.active {
+            background: #4caf50;
+            color: white;
+        }
+
+        .track-btn.missed {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .track-btn.missed.active {
+            background: #f44336;
+            color: white;
+        }
+
+        .remarks-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            resize: none;
+        }
+
+        .remarks-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            padding: 8px 15px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item .nav-icon {
+            font-size: 1.3rem;
+        }
+
+        .nav-item .nav-label {
+            font-size: 0.65rem;
+        }
+
+        .share-btn {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(233, 30, 99, 0.4);
+            z-index: 99;
+        }
+
+        .symptom-tips {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .symptom-tips h4 {
+            color: #1565c0;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 0.85rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: var(--primary-dark);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .view-hidden {
+            display: none;
+        }
+
+        .nutrient-focus {
+            background: linear-gradient(135deg, #fce4ec, #f8bbd9);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .nutrient-focus h4 {
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .nutrient-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .nutrient-item {
+            background: white;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .nutrient-item .value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .nutrient-item .name {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-overview {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .progress-bar-container {
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        @media (max-width: 360px) {
+            .week-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .day-btn {
+                min-width: 40px;
+                padding: 10px 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🤰 Pregnancy Care Guide</h1>
+        <p>Customized for Hyderabad | Week-by-Week Plan</p>
+    </header>
+
+    <div class="container">
+        <!-- Quick Stats -->
+        <div class="quick-stats" id="quickStats">
+            <div class="stat-card">
+                <div class="number" id="currentWeek">4</div>
+                <div class="label">Current Week</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="daysLeft">252</div>
+                <div class="label">Days to Go</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="completion">0%</div>
+                <div class="label">Tracked</div>
+            </div>
+        </div>
+
+        <!-- Main Navigation Views -->
+        <div id="homeView">
+            <!-- Trimester Selection -->
+            <div class="trimester-tabs">
+                <button class="trimester-tab active" data-trimester="1">1st Trimester<br><small>Weeks 1-13</small></button>
+                <button class="trimester-tab" data-trimester="2">2nd Trimester<br><small>Weeks 14-27</small></button>
+                <button class="trimester-tab" data-trimester="3">3rd Trimester<br><small>Weeks 28-40</small></button>
+            </div>
+
+            <!-- Week Grid -->
+            <h2 class="section-title">📅 Select Week</h2>
+            <div class="week-grid" id="weekGrid"></div>
+        </div>
+
+        <!-- Day View -->
+        <div id="dayView" class="view-hidden">
+            <h2 class="section-title">
+                <span id="selectedWeekTitle">Week 4</span>
+            </h2>
+
+            <!-- Day Selector -->
+            <div class="day-selector" id="daySelector"></div>
+
+            <!-- Diet Type Toggle -->
+            <div class="diet-toggle">
+                <button class="active" data-diet="veg">🥬 Vegetarian</button>
+                <button data-diet="nonveg">🍗 Non-Veg</button>
+            </div>
+
+            <!-- Energy Level -->
+            <div class="energy-selector">
+                <button class="energy-btn active" data-energy="normal">
+                    <div class="emoji">😊</div>
+                    <div class="label">Normal</div>
+                </button>
+                <button class="energy-btn" data-energy="low">
+                    <div class="emoji">😴</div>
+                    <div class="label">Fatigued</div>
+                </button>
+                <button class="energy-btn" data-energy="high">
+                    <div class="emoji">💪</div>
+                    <div class="label">Energetic</div>
+                </button>
+            </div>
+
+            <!-- Nutrient Focus for the Week -->
+            <div class="nutrient-focus" id="nutrientFocus"></div>
+
+            <!-- Warning Card -->
+            <div class="warning-card" id="warningCard"></div>
+
+            <!-- Symptom Tips -->
+            <div class="symptom-tips" id="symptomTips"></div>
+
+            <!-- Meal Cards -->
+            <div id="mealCards"></div>
+
+            <!-- Exercise Section -->
+            <div class="exercise-card" id="exerciseCard"></div>
+
+            <!-- Danger Signs -->
+            <div class="danger-card" id="dangerSigns"></div>
+        </div>
+
+        <!-- Tracking View -->
+        <div id="trackingView" class="view-hidden">
+            <h2 class="section-title">📊 Daily Tracking</h2>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px;">
+                Track your adherence for <span id="trackingDate">Week 4, Day 1</span>
+            </p>
+
+            <div class="tracking-section" id="trackingSection"></div>
+
+            <div style="margin-top: 15px;">
+                <label style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">Daily Remarks</label>
+                <textarea class="remarks-input" id="remarksInput" rows="3" placeholder="How are you feeling today? Any symptoms or notes..."></textarea>
+            </div>
+
+            <button id="saveTracking" style="width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; margin-top: 15px; cursor: pointer;">
+                💾 Save Tracking Data
+            </button>
+        </div>
+
+        <!-- Progress View -->
+        <div id="progressView" class="view-hidden">
+            <h2 class="section-title">📈 Progress Overview</h2>
+
+            <div class="progress-overview">
+                <h3 style="font-size: 0.95rem; margin-bottom: 15px;">Overall Journey</h3>
+                <div class="progress-bar-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="journeyProgress" style="width: 10%;"></div>
+                    </div>
+                    <div class="progress-label">
+                        <span>Week 4</span>
+                        <span>Week 40</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-overview">
+                <h3 style="font-size: 0.95rem; margin-bottom: 15px;">This Week's Adherence</h3>
+                <div id="weeklyStats"></div>
+            </div>
+
+            <div class="progress-overview">
+                <h3 style="font-size: 0.95rem; margin-bottom: 15px;">Recent Tracking History</h3>
+                <div id="trackingHistory"></div>
+            </div>
+        </div>
+
+        <!-- Info View -->
+        <div id="infoView" class="view-hidden">
+            <h2 class="section-title">ℹ️ Important Information</h2>
+
+            <div class="warning-card">
+                <h4>⚠️ Foods to STRICTLY AVOID</h4>
+                <ul>
+                    <li><strong>Raw Papaya & Pineapple</strong> - Contains latex and bromelain, may cause contractions</li>
+                    <li><strong>Unpasteurized Dairy</strong> - Risk of Listeria infection</li>
+                    <li><strong>Raw/Undercooked Eggs</strong> - Salmonella risk</li>
+                    <li><strong>High-Mercury Fish</strong> - Shark, swordfish, king mackerel, tilefish</li>
+                    <li><strong>Raw Sprouts</strong> - Bacterial contamination risk</li>
+                    <li><strong>Excess Caffeine</strong> - Limit to 200mg/day (1 small cup coffee)</li>
+                    <li><strong>Alcohol</strong> - Absolutely none, causes fetal damage</li>
+                    <li><strong>Raw/Undercooked Meat</strong> - Risk of Toxoplasmosis</li>
+                    <li><strong>Ajinomoto/MSG</strong> - Avoid processed foods</li>
+                    <li><strong>Sesame Seeds (Til)</strong> - May induce heat, use sparingly</li>
+                </ul>
+            </div>
+
+            <div class="danger-card">
+                <h4>🚨 STOP Exercise & Call Doctor IF:</h4>
+                <ul>
+                    <li>Vaginal bleeding or fluid leakage</li>
+                    <li>Severe abdominal or pelvic pain</li>
+                    <li>Persistent headache or vision changes</li>
+                    <li>Chest pain or difficulty breathing</li>
+                    <li>Dizziness or fainting</li>
+                    <li>Severe nausea with inability to keep fluids down</li>
+                    <li>Fever above 100.4°F (38°C)</li>
+                    <li>Decreased fetal movement (after week 20)</li>
+                    <li>Regular painful contractions before 37 weeks</li>
+                    <li>Calf pain or swelling (possible clot)</li>
+                </ul>
+            </div>
+
+            <div class="nutrient-focus">
+                <h4>🎯 First Trimester Key Nutrients</h4>
+                <div class="nutrient-grid">
+                    <div class="nutrient-item">
+                        <div class="value">600μg</div>
+                        <div class="name">Folic Acid/day</div>
+                    </div>
+                    <div class="nutrient-item">
+                        <div class="value">27mg</div>
+                        <div class="name">Iron/day</div>
+                    </div>
+                    <div class="nutrient-item">
+                        <div class="value">2.6μg</div>
+                        <div class="name">Vitamin B12/day</div>
+                    </div>
+                    <div class="nutrient-item">
+                        <div class="value">1000mg</div>
+                        <div class="name">Calcium/day</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="symptom-tips">
+                <h4>💡 Managing First Trimester Symptoms</h4>
+                <div class="tip-item">
+                    <span>🤢</span>
+                    <span><strong>Morning Sickness:</strong> Eat small, frequent meals. Keep crackers by bed. Ginger tea, lemon water, jeera water help.</span>
+                </div>
+                <div class="tip-item">
+                    <span>😴</span>
+                    <span><strong>Fatigue:</strong> Rest when needed. Iron-rich foods help. Short walks boost energy.</span>
+                </div>
+                <div class="tip-item">
+                    <span>🫨</span>
+                    <span><strong>Bloating:</strong> Avoid gas-forming foods. Eat slowly. Ajwain water or saunf helps.</span>
+                </div>
+                <div class="tip-item">
+                    <span>🍋</span>
+                    <span><strong>Food Aversions:</strong> Don't force foods. Find alternatives. This usually passes by week 14.</span>
+                </div>
+            </div>
+
+            <div class="exercise-card">
+                <h3>🏃‍♀️ Safe Exercises by Energy Level</h3>
+                <div class="exercise-item">
+                    <h4>Low Energy Days</h4>
+                    <p>Gentle breathing, ankle rotations, pelvic tilts in bed, short 5-min walks</p>
+                </div>
+                <div class="exercise-item">
+                    <h4>Normal Energy Days</h4>
+                    <p>15-20 min walks, prenatal yoga basics, gentle stretching, Kegel exercises</p>
+                </div>
+                <div class="exercise-item">
+                    <h4>High Energy Days</h4>
+                    <p>30 min brisk walking, swimming, prenatal aerobics, stationary cycling</p>
+                </div>
+            </div>
+
+            <div style="background: var(--card-bg); border-radius: var(--border-radius); padding: 20px; margin-bottom: 15px;">
+                <h3 style="font-size: 1rem; color: var(--primary-dark); margin-bottom: 15px;">🛒 Hyderabad Shopping Guide</h3>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 10px;">
+                    <strong>Supermarkets:</strong> Ratnadeep, Vijetha, More, D-Mart, BigBasket
+                </p>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 10px;">
+                    <strong>Organic Stores:</strong> 24 Mantra, Sahaja Aharam, Organic World
+                </p>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 10px;">
+                    <strong>Fresh Produce:</strong> Rythu Bazaar, Local Vegetable Markets
+                </p>
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">
+                    <strong>Traditional Items:</strong> Patel Market, Moazzam Jahi Market
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Button -->
+    <button class="share-btn" id="shareBtn">📤</button>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-view="home">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-item" data-view="day">
+            <span class="nav-icon">📋</span>
+            <span class="nav-label">Plan</span>
+        </button>
+        <button class="nav-item" data-view="tracking">
+            <span class="nav-icon">✅</span>
+            <span class="nav-label">Track</span>
+        </button>
+        <button class="nav-item" data-view="progress">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Progress</span>
+        </button>
+        <button class="nav-item" data-view="info">
+            <span class="nav-icon">ℹ️</span>
+            <span class="nav-label">Info</span>
+        </button>
+    </nav>
+
+    <!-- Share Modal -->
+    <div class="modal" id="shareModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Share Plan</h3>
+                <button class="close-btn" id="closeShareModal">&times;</button>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px;">
+                Share today's plan via:
+            </p>
+            <button id="shareWhatsApp" style="width: 100%; padding: 12px; background: #25D366; color: white; border: none; border-radius: 10px; font-size: 0.9rem; margin-bottom: 10px; cursor: pointer;">
+                📱 WhatsApp
+            </button>
+            <button id="copyPlan" style="width: 100%; padding: 12px; background: var(--info); color: white; border: none; border-radius: 10px; font-size: 0.9rem; margin-bottom: 10px; cursor: pointer;">
+                📋 Copy to Clipboard
+            </button>
+            <button id="downloadPDF" style="width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 0.9rem; cursor: pointer;">
+                📄 Download as Text
+            </button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
